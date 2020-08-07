@@ -7,7 +7,7 @@
     "webpack": "webpack -d",
     "dev": "node script.js",
     "webpack-production": "NODE_ENV=production webpack -p",
-    "babel-production": "NODE_ENV=production COMPILER_ENV=server babel -x \".tsx,.ts\" --out-dir dist --config-file ./.babelrc.server.json src",
+    "babel-production": "NODE_ENV=production COMPILER_ENV=server babel -x \".tsx,.ts\" --out-dir dist --config-file ./.babelrc.server.prod.json src",
     "start": "node dist/app.js",
     "build": "npm run webpack-production && npm run babel-production",
     "test": "standardx",

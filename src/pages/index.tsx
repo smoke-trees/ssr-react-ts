@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 
 import './index.css'
-import lina from '../images/lina.jpg'
+import lina from '../assets/lina.jpg'
 
 interface Message {
     message: string;
@@ -16,6 +16,7 @@ const NewComp: React.FC<Message> = ({ message, name }) => {
   const decrementCount = () => {
     setCount(count - 1)
   }
+  console.log(count)
   return (
     <div>
       <h1>{message}, {name}! Count : {count}</h1>

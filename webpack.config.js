@@ -62,7 +62,7 @@ const config = [{
         use: [{
           loader: 'file-loader',
           options: {
-            name: '[md5:hash:hex].[ext]',
+            name: production?'[md5:hash:hex].[ext]': '[name].[ext]',
             publicPath: '/public/img',
             outputPath: 'img'
           }
@@ -74,7 +74,7 @@ const config = [{
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.json', '.wasm', '.mjs', '*']
   },
-
+  devtool: 'eval-cheap-module-source-map',
   optimization: {
     splitChunks: {
       automaticNameDelimiter: '.',
