@@ -4,7 +4,8 @@
   "parserOptions" : {
     "ecmaFeatures": {
         "jsx": true
-    }
+    },
+    "sourceType": "module"
   },
   "settings": {
       "react": {
@@ -13,7 +14,7 @@
   },
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint/eslint-plugin"
   ],
   "extends": [
     "eslint:recommended",
