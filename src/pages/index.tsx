@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react'
 
 import './index.css'
+import './index1.scss'
 import lina from '../assets/lina.jpg'
 
 interface Message {

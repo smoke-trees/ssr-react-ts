@@ -26,45 +26,7 @@ webpack(webpackConfig, (err, stats) => {
     return
   }
 
-  const info = stats.toJson()
-
-  if (stats.hasErrors()) {
-    console.error(info.errors)
-  }
-
-  if (stats.hasWarnings()) {
-    console.warn(info.warnings)
-  }
-
-  console.log('\x1b[38;2;213;235;21mCompiled by Webpack\n')
-
-  info.children.forEach((child) => {
-    console.log('Output Path: ', child.outputPath)
-    console.log(
-      '\x1b[38;2;21;194;90mAsset \t \t \t \t \t \t ChunkName \t \t \t \t Size\x1b[0m\n'
-    )
-    child.assets.forEach((asset ) => {
-      const ac = asset.name.length > 20 ? '\t \t \t ' : '\t \t \t \t \t'
-      const chn =
-        (asset.chunkNames[0] || '').length > 13
-          ? '\t \t \t '
-          : '\t \t \t \t \t '
-      console.log(
-        '\x1b[38;2;21;194;90m%s %s \x1b[0m%s%s%fkb',
-        asset.name,
-        ac,
-        asset.chunkNames[0] || '',
-        chn,
-        (asset.size / 1024).toFixed(2)
-      )
-    })
-  })
-
-  console.log()
-
-  // console.log('\x1b[38;2;255;200;0mStarting the developemnt server\x1b[0m')
-
-  console.log()
+  console.log(stats.toString({ colors: true }))
 })
 
 nodemon({

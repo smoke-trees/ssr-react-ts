@@ -56,13 +56,22 @@ const config = [{
             publicPath: '/public/css'
           }
 
-        }, 'css-loader']
+        }, 'css-loader'],
+
+      }, {
+        test: /\.(scss|sass)$/,
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            publicPath: '/public/css'
+          }
+        }, 'css-loader','sass-loader'],
       }, {
         test: /\.(jpg|jpeg|png|svg|gif)$/,
         use: [{
           loader: 'file-loader',
           options: {
-            name: production?'[md5:hash:hex].[ext]': '[name].[ext]',
+            name: production ? '[md5:hash:hex].[ext]' : '[name].[ext]',
             publicPath: '/public/img',
             outputPath: 'img'
           }
@@ -76,7 +85,7 @@ const config = [{
   },
   devtool: 'eval-cheap-module-source-map',
   optimization: {
-    splitChunks: {tags todo
+    splitChunks: {
       automaticNameDelimiter: '.',
       cacheGroups: {
         react: {
@@ -84,6 +93,10 @@ const config = [{
         }
       }
     }
+  },
+
+  stats: {
+    colors: true
   },
 
   plugins: [
