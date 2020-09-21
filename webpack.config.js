@@ -76,7 +76,7 @@ const config = [{
   },
   devtool: 'eval-cheap-module-source-map',
   optimization: {
-    splitChunks: {tags todo
+    splitChunks: {
       automaticNameDelimiter: '.',
       cacheGroups: {
         react: {
