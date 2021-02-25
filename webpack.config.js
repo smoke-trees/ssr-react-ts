@@ -56,7 +56,7 @@ const config = [{
             publicPath: '/public/css'
           }
 
-        }, 'css-loader'],
+        }, 'css-loader']
 
       }, {
         test: /\.(scss|sass)$/,
@@ -65,7 +65,7 @@ const config = [{
           options: {
             publicPath: '/public/css'
           }
-        }, 'css-loader','sass-loader'],
+        }, 'css-loader', 'sass-loader']
       }, {
         test: /\.(jpg|jpeg|png|svg|gif)$/,
         use: [{
