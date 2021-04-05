@@ -10,10 +10,11 @@ const generateEntryPoints = (entry) => {
   return entry.reduce((obj, item) => {
     return {
       ...obj,
-      [item]: [path.resolve('src', 'entrypoints', `${item}.tsx`)]
+      [item]: ['regenerator-runtime', path.resolve('src', 'entrypoints', `${item}.tsx`)]
     }
   }, {})
 }
+console.log(generateEntryPoints(pages))
 
 const generateHtml = (entry) => {
   return entry.map((i) => {
@@ -42,7 +43,8 @@ const config = [{
         test: /\.(tsx|ts|js|jsx)$/,
         loader: 'babel-loader',
         options: {
-          presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript']
+          presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+          plugins: [['@babel/plugin-transform-regenerator', { async: true }]]
         },
         exclude: [/node_modules/, /static/]
       }, {

@@ -15,19 +15,23 @@ console.log(
   '\x1b[38;2;31;240;255mAnshuman Chhapolia \thttps://github.com/achhapolia10 \x1b[0m\n\n'
 )
 
-webpackConfig.watch = true
+const compiler = webpack(webpackConfig)
 
-webpack(webpackConfig, (err, stats) => {
-  if (err) {
-    console.error(err.stack || err)
-    if (err.details) {
-      console.error(err.details)
+compiler.watch({ poll: true },
+  (err, stats) => {
+    if (err) {
+      console.error(err.stack || err)
+      if (err.details) {
+        console.error(err.details)
+      }
+      return
     }
-    return
-  }
 
-  console.log(stats.toString({ colors: true }))
-})
+    console.log(stats.toString({ colors: true }))
+  }
+)
+   
+
 
 nodemon({
   ext: 'css,js,jsx,ejs,cjs,ts,json,mjs,tsx,ts',

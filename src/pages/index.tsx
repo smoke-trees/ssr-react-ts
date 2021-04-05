@@ -10,8 +10,8 @@ interface Message {
 }
 
 const NewComp: React.FC<Message> = ({ message, name }) => {
-  const [count, setCount] = useState(0)
-  const incrementCount = () => {
+  const [count, setCount] = useState(1)
+  const incrementCount = async () => {
     setCount(count + 1)
   }
   const decrementCount = () => {
