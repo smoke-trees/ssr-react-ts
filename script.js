@@ -15,28 +15,28 @@ console.log(
   '\x1b[38;2;31;240;255mAnshuman Chhapolia \thttps://github.com/achhapolia10 \x1b[0m\n\n'
 )
 
-const compiler = webpack(webpackConfig)
+// const compiler = webpack(webpackConfig)
 
-compiler.watch({ poll: true },
-  (err, stats) => {
-    if (err) {
-      console.error(err.stack || err)
-      if (err.details) {
-        console.error(err.details)
-      }
-      return
-    }
+// compiler.watch({ poll: true },
+//   (err, stats) => {
+//     if (err) {
+//       console.error(err.stack || err)
+//       if (err.details) {
+//         console.error(err.details)
+//       }
+//       return
+//     }
 
-    console.log(stats.toString({ colors: true }))
-  }
-)
+//     console.log(stats.toString({ colors: true }))
+//   }
+// )
    
 
 
 nodemon({
   ext: 'css,js,jsx,ejs,cjs,ts,json,mjs,tsx,ts',
   exec: 'babel-node --config-file ./.babelrc.server.json -x ".tsx,.ts"',
-  script: './src/app.tsx',
+  script: './src/server.ts',
   watch: './src',
-  ignore: './src/static'
+  ignore: ['./src/static', './src/pages', './src/components', './src/entrypoints', './src/utils']
 })

@@ -11,7 +11,7 @@
         "**/build/": true,
         "**/CVS": true,
         "dist/": true,
-        "node_modules": true,
-        "script.js": true
-    }
+        "node_modules": true
+    },
+    "standard.engine": "standardx"
 }

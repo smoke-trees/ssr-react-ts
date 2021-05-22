@@ -1,8 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const production = process.env.NODE_ENV === 'production'
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const webpack = require('webpack')
 
 const pages = ['index']
 
@@ -10,7 +12,10 @@ const generateEntryPoints = (entry) => {
   return entry.reduce((obj, item) => {
     return {
       ...obj,
-      [item]: ['regenerator-runtime', path.resolve('src', 'entrypoints', `${item}.tsx`)]
+      [item]: [
+        'regenerator-runtime',
+        "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+        path.resolve('src', 'entrypoints', `${item}.tsx`)]
     }
   }, {})
 }
@@ -34,7 +39,10 @@ const config = [{
   output: {
     path: production ? path.resolve(__dirname, 'dist', 'static', 'public') : path.resolve(__dirname, 'src', 'static', 'public'),
     filename: production ? 'js/[chunkhash].js' : 'js/[name].js',
-    publicPath: '/public'
+    publicPath: '/public',
+    hotUpdateChunkFilename: './hmr/[id].[hash].hot-update.js',
+    hotUpdateMainFilename: './hmr/[runtime].[hash].hot-update.json',
+    clean: true
   },
 
   module: {
@@ -86,15 +94,15 @@ const config = [{
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.json', '.wasm', '.mjs', '*']
   },
   devtool: 'eval-cheap-module-source-map',
-  optimization: {
+  optimization: !production ? undefined : {
     splitChunks: {
       automaticNameDelimiter: '.',
       cacheGroups: {
         react: {
-          chunks: 'initial'
-        }
-      }
-    }
+          chunks: 'initial',
+        },
+      },
+    },
   },
 
   stats: {
@@ -102,8 +110,10 @@ const config = [{
   },
 
   plugins: [
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     // create blog,
+    !production && new webpack.HotModuleReplacementPlugin(),
+    !production && new ReactRefreshWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: production ? 'css/[contentHash].css' : 'css/[id].css',
       chunkFilename: production ? 'css/[contentHash].css' : 'css/[id].css'
