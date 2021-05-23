@@ -93,7 +93,7 @@ const config = [{
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.json', '.wasm', '.mjs', '*']
   },
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'eval-source-map',
   optimization: !production ? undefined : {
     splitChunks: {
       automaticNameDelimiter: '.',
