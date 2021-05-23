@@ -6,9 +6,9 @@
   "scripts": {
     "webpack": "webpack -d",
     "dev": "node script.js",
-    "webpack-production": "NODE_ENV=production webpack -p",
+    "webpack-production": "NODE_ENV=production webpack",
     "babel-production": "NODE_ENV=production COMPILER_ENV=server babel -x \".tsx,.ts\" --out-dir dist --config-file ./.babelrc.server.prod.json src",
-    "start": "node dist/app.js",
+    "start": "NODE_ENV=production node dist/server.js",
     "build": "npm run webpack-production && npm run babel-production",
     "test": "standardx \"**/*.tsx\" \"**/*.ts\"",
     "lint": "standardx \"**/*.tsx\" \"**/*.ts\" --fix"
@@ -23,24 +23,24 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "core-js": "^3.9.1",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "regenerator-runtime": "^0.13.7",
     "@types/ejs": "^3.0.4",
     "@types/express": "^4.17.7",
     "@types/react": "^16.9.44",
     "@types/react-dom": "^16.9.8",
     "@types/webpack-dev-middleware": "^4.3.0",
     "@types/webpack-hot-middleware": "^2.25.4",
-    "core-js": "^3.9.1",
-    "ejs": "^3.1.3",
-    "express": "^4.17.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
     "react-refresh-webpack-plugin": "^0.1.0",
-    "regenerator-runtime": "^0.13.7",
-    "typescript": "^3.9.7",
     "webpack-dev-middleware": "^4.3.0",
-    "webpack-hot-middleware": "^2.25.0"
-  },
-  "devDependencies": {
+    "webpack-hot-middleware": "^2.25.0",
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.1",
     "@babel/node": "^7.10.5",

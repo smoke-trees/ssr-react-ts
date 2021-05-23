@@ -12,14 +12,28 @@ const generateEntryPoints = (entry) => {
   return entry.reduce((obj, item) => {
     return {
       ...obj,
-      [item]: [
+      [item]: !production ? [
         'regenerator-runtime',
         "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
-        path.resolve('src', 'entrypoints', `${item}.tsx`)]
+        path.resolve('src', 'entrypoints', `${item}.tsx`)] : [
+        'regenerator-runtime',
+        path.resolve('src', 'entrypoints', `${item}.tsx`)
+      ]
     }
   }, {})
 }
-console.log(generateEntryPoints(pages))
+
+const getBabelPlugins = () => {
+  const plugins = [
+    '@babel/plugin-transform-regenerator',
+  ]
+  if (!production) {
+    plugins.push(require.resolve('react-refresh/babel'))
+  }
+  return plugins
+}
+
+
 
 const generateHtml = (entry) => {
   return entry.map((i) => {
@@ -52,7 +66,7 @@ const config = [{
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
-          plugins: [['@babel/plugin-transform-regenerator', { async: true }]]
+          plugins: getBabelPlugins()
         },
         exclude: [/node_modules/, /static/]
       }, {
@@ -93,7 +107,7 @@ const config = [{
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx', '.json', '.wasm', '.mjs', '*']
   },
-  devtool: 'eval-source-map',
+  devtool: !production ? 'eval-source-map' : undefined,
   optimization: !production ? undefined : {
     splitChunks: {
       automaticNameDelimiter: '.',
@@ -112,15 +126,18 @@ const config = [{
   plugins: [
     // new CleanWebpackPlugin(),
     // create blog,
-    !production && new webpack.HotModuleReplacementPlugin(),
-    !production && new ReactRefreshWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: production ? 'css/[contentHash].css' : 'css/[id].css',
-      chunkFilename: production ? 'css/[contentHash].css' : 'css/[id].css'
+      filename: production ? 'css/[contenthash].css' : 'css/[id].css',
+      chunkFilename: production ? 'css/[contenthash].css' : 'css/[id].css'
     }),
     // Ejs pages
     ...generateHtml(pages)
   ]
 }]
+
+if (!production) {
+  config[0].plugins.push(new webpack.HotModuleReplacementPlugin())
+  config[0].plugins.push(new ReactRefreshWebpackPlugin())
+}
 
 module.exports = config
