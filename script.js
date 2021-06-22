@@ -36,7 +36,16 @@ console.log(
 nodemon({
   ext: 'css,js,jsx,ejs,cjs,ts,json,mjs,tsx,ts',
   exec: 'babel-node --config-file ./.babelrc.server.json -x ".tsx,.ts"',
+  delay: '500ms',
   script: './src/server.ts',
   watch: './src',
   ignore: ['./src/static', './src/pages', './src/components', './src/entrypoints', './src/utils']
+})
+
+process.once('SIGUSR2', function () {
+  process.kill(process.pid, 'SIGUSR2')
+})
+
+process.on('SIGINT', function() {
+  process.kill(process.pid, 'SIGINT')
 })

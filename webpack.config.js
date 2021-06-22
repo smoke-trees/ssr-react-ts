@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const production = process.env.NODE_ENV === 'production'
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 
 const pages = ['index']
@@ -40,7 +41,7 @@ const generateHtml = (entry) => {
     return new HtmlWebpackPlugin({
       chunks: [i],
       filename: `../views/${i}.ejs`,
-      template: path.join('src', 'views', 'template.ejs')
+      template: path.join('src', 'views', 'header.ejs')
     })
   })
 }
@@ -131,7 +132,13 @@ const config = [{
       chunkFilename: production ? 'css/[contenthash].css' : 'css/[id].css'
     }),
     // Ejs pages
-    ...generateHtml(pages)
+    ...generateHtml(pages),
+    new CopyPlugin( {
+      patterns: [
+        {from: 'src/views/partials', to: '../views'},
+        {from: 'src/views/footer.ejs', to: '../views/footer.ejs'}
+      ]
+    })
   ]
 }]
 

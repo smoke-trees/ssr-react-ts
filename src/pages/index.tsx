@@ -5,8 +5,8 @@ import './index1.scss'
 import lina from '../assets/lina.jpg'
 
 interface Message {
-    message: string;
-    name: string;
+  message: string;
+  name: string;
 }
 
 const NewComp: React.FC<Message> = ({ message, name }) => {
@@ -17,7 +17,6 @@ const NewComp: React.FC<Message> = ({ message, name }) => {
   const decrementCount = () => {
     setCount(count - 1)
   }
-  console.log(count)
   return (
     <div>
       <h1>{message}, {name}! Count : {count}</h1>
@@ -26,7 +25,7 @@ const NewComp: React.FC<Message> = ({ message, name }) => {
       <br />
       <img src={lina} />
     </div>
-    ) as ReactElement
+  ) as ReactElement
 }
 
 export default NewComp
