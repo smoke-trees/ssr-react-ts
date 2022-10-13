@@ -1,13 +1,30 @@
-
 interface SeoMetadata {
+  /**
+   * Title of the page.
+   */
   title: string;
+  /**
+   * Description for the page.
+   */
   description: string;
 }
 
 interface OpenGraphGeneral {
+  /**
+   * Open Graph url. Assign it to req.url
+   */
   'og:url': string;
+  /**
+   * Open Graph type. Type of the page: article, website,music
+   */
   'og:type': string;
+  /**
+   * Open Graph title for the card
+   */
   'og:title': string;
+  /**
+   * Open Graph description for the page
+   */
   'og:description': string;
 }
 

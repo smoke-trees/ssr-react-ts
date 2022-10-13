@@ -1,6 +1,5 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const production = process.env.NODE_ENV === 'production'
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -16,13 +15,14 @@ const generateEntryPoints = (entry) => {
       [item]: !production ? [
         'regenerator-runtime',
         "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
-        path.resolve('src', 'entrypoints', `${item}.tsx`)] : [
+        path.resolve('src', 'entrypoints', `entry.tsx`)] : [
         'regenerator-runtime',
-        path.resolve('src', 'entrypoints', `${item}.tsx`)
+          path.resolve('src', 'entrypoints', `entry.tsx`)
       ]
     }
   }, {})
 }
+
 
 const getBabelPlugins = () => {
   const plugins = [
@@ -47,16 +47,14 @@ const generateHtml = (entry) => {
 }
 const config = [{
   mode: production ? 'production' : 'development',
-  entry: {
-    ...generateEntryPoints(pages)
-  },
+  entry: generateEntryPoints(pages),
 
   output: {
     path: production ? path.resolve(__dirname, 'dist', 'static', 'public') : path.resolve(__dirname, 'src', 'static', 'public'),
-    filename: production ? 'js/[chunkhash].js' : 'js/[name].js',
+    filename: production ? 'js/[chunkhash].js' : 'js/[fullname].js',
     publicPath: '/public',
-    hotUpdateChunkFilename: './hmr/[id].[hash].hot-update.js',
-    hotUpdateMainFilename: './hmr/[runtime].[hash].hot-update.json',
+    hotUpdateChunkFilename: './hmr/[id].hot-update.js',
+    hotUpdateMainFilename: './hmr/[runtime].hot-update.json',
     clean: true
   },
 
@@ -133,10 +131,10 @@ const config = [{
     }),
     // Ejs pages
     ...generateHtml(pages),
-    new CopyPlugin( {
+    new CopyPlugin({
       patterns: [
-        {from: 'src/views/partials', to: '../views'},
-        {from: 'src/views/footer.ejs', to: '../views/footer.ejs'}
+        { from: 'src/views/partials', to: '../views' },
+        { from: 'src/views/footer.ejs', to: '../views/footer.ejs' }
       ]
     })
   ]

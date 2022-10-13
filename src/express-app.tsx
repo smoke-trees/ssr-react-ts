@@ -1,8 +1,10 @@
+import compression from 'compression'
 import express from 'express'
 import path from 'path'
 import React from 'react'
-import Index from './pages/index'
-import { RenderReact } from './utils/RenderReact'
+import { StaticRouter } from 'react-router-dom/server'
+import { App } from './App'
+import { RenderReactStream } from './utils/RenderReact'
 
 // Server var
 const app = express()
@@ -11,18 +13,24 @@ const app = express()
 app.set('views', path.join(__dirname, 'static', 'views'))
 app.set('view engine', 'ejs')
 
+console.log(app.get('views'))
+
 // Middleware
 app.use('/public', express.static(path.join(__dirname, 'static', 'public')))
+app.use(compression({
+
+}))
+
+app.disable('x-powered-by')
 
 // Routes
-app.get('/', (req, res) => {
-  // const reactComp = renderToString(<Index message='Hello' name='Anshuman' />)
-  // res.status(200).render('index', { reactComp: reactComp })
-  RenderReact(
+app.get('/test', (req, res) => {
+  RenderReactStream(
     req,
     res,
-    <Index message='Hello' name='Anshuman' />,
-    'index',
+    <StaticRouter location='/test'>
+      <App />
+    </StaticRouter>,
     {
       charset: 'UTF-8',
       lang: 'en_US',
@@ -33,7 +41,8 @@ app.get('/', (req, res) => {
         }
       },
       url: req.url
-    }
+    },
+    'index'
   )
 })
 

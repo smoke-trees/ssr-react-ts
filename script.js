@@ -42,10 +42,11 @@ nodemon({
   ignore: ['./src/static', './src/pages', './src/components', './src/entrypoints', './src/utils']
 })
 
-process.once('SIGUSR2', function () {
-  process.kill(process.pid, 'SIGUSR2')
-})
+// process.on('SIGUSR2', function () {
+//   console.log('123')
+//   process.kill(process.pid, 'SIGUSR2')
+// })
 
-process.on('SIGINT', function() {
-  process.kill(process.pid, 'SIGINT')
-})
+// process.on('SIGINT', function() {
+//   process.kill(process.pid, 'SIGINT')
+// })
