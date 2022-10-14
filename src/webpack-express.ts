@@ -11,7 +11,6 @@ app.use(
   middleware(compiler, {
     serverSideRender: true,
     writeToDisk: true,
-
     publicPath: `${config.output.publicPath}`
   })
 )

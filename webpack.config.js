@@ -4,25 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const production = process.env.NODE_ENV === 'production'
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin')
-const webpack = require('webpack')
-
-const pages = ['index']
-
-const generateEntryPoints = (entry) => {
-  return entry.reduce((obj, item) => {
-    return {
-      ...obj,
-      [item]: !production ? [
-        'regenerator-runtime',
-        "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
-        path.resolve('src', 'entrypoints', `entry.tsx`)] : [
-        'regenerator-runtime',
-          path.resolve('src', 'entrypoints', `entry.tsx`)
-      ]
-    }
-  }, {})
-}
-
+const { getCompilerHooks, WebpackManifestPlugin } = require('webpack-manifest-plugin')
+const webpack = require('webpack');
+const ReplacePlugin = require('webpack-plugin-replace');
 
 const getBabelPlugins = () => {
   const plugins = [
@@ -35,6 +19,16 @@ const getBabelPlugins = () => {
 }
 
 
+class BatmanPlugin {
+  apply(compiler) {
+    const { afterEmit } = getCompilerHooks(compiler);
+
+    afterEmit.tap('BatmanPlugin', (manifest) => {
+      return { ...manifest, name: 'hello' };
+    });
+  }
+}
+
 
 const generateHtml = (entry) => {
   return entry.map((i) => {
@@ -46,13 +40,21 @@ const generateHtml = (entry) => {
   })
 }
 const config = [{
+  entry: {
+    vendor: !production ? [
+      'regenerator-runtime',
+      "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
+      path.resolve('src', 'entrypoints', `entry.tsx`)] : [
+      'regenerator-runtime',
+      path.resolve('src', 'entrypoints', `entry.tsx`)
+    ]
+  },
   mode: production ? 'production' : 'development',
-  entry: generateEntryPoints(pages),
 
   output: {
     path: production ? path.resolve(__dirname, 'dist', 'static', 'public') : path.resolve(__dirname, 'src', 'static', 'public'),
-    filename: production ? 'js/[chunkhash].js' : 'js/[fullname].js',
-    publicPath: '/public',
+    filename: production ? 'js/[name].[chunkhash].js' : 'js/[name].js',
+    publicPath: process.env.PUBLIC_PATH || '/public/',
     hotUpdateChunkFilename: './hmr/[id].hot-update.js',
     hotUpdateMainFilename: './hmr/[runtime].hot-update.json',
     clean: true
@@ -76,7 +78,7 @@ const config = [{
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            publicPath: '/public/css'
+            // publicPath: process.env.PUBLIC_PATH || '/public/css'
           }
 
         }, 'css-loader']
@@ -86,7 +88,7 @@ const config = [{
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            publicPath: '/public/css'
+            // publicPath: process.env.PUBLIC_PATH || '/public/css'
           }
         }, 'css-loader', 'sass-loader']
       }, {
@@ -95,7 +97,7 @@ const config = [{
           loader: 'file-loader',
           options: {
             name: production ? '[md5:hash:hex].[ext]' : '[name].[ext]',
-            publicPath: '/public/img',
+            // publicPath: '/public/img',
             outputPath: 'img'
           }
         }]
@@ -121,8 +123,8 @@ const config = [{
   stats: {
     colors: true
   },
-
   plugins: [
+    // new WebpackManifestPlugin({}),
     // new CleanWebpackPlugin(),
     // create blog,
     new MiniCssExtractPlugin({
@@ -130,7 +132,7 @@ const config = [{
       chunkFilename: production ? 'css/[contenthash].css' : 'css/[id].css'
     }),
     // Ejs pages
-    ...generateHtml(pages),
+    // ...generateHtml(pages),
     new CopyPlugin({
       patterns: [
         { from: 'src/views/partials', to: '../views' },

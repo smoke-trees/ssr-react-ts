@@ -46,4 +46,26 @@ app.get('/test', (req, res) => {
   )
 })
 
+app.get('/', (req, res) => {
+  RenderReactStream(
+    req,
+    res,
+    <StaticRouter location='/'>
+      <App />
+    </StaticRouter>,
+    {
+      charset: 'UTF-8',
+      lang: 'en_US',
+      seo: {
+        metadata: {
+          title: 'title',
+          description: 'description'
+        }
+      },
+      url: req.url
+    },
+    'index2'
+  )
+})
+
 export default app
