@@ -2,14 +2,12 @@ import React, { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 // import NewComp from './pages'
 // import NewComp2 from './pages/index2'
-import manifest from './static/public/manifest.json'
 
 const NewComp = React.lazy(() => import('./pages'))
 const NewComp2 = React.lazy(() => import('./pages/index2'))
 
 // Auto generates routes from files under ./pages
 // https://vitejs.dev/guide/features.html#glob-import
-console.log(manifest)
 
 export function App (): JSX.Element {
   return (

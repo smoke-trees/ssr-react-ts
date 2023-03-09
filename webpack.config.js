@@ -19,12 +19,12 @@ const getBabelPlugins = () => {
 }
 
 
-class BatmanPlugin {
+class ReplaceVendorPlugin {
   apply(compiler) {
     const { afterEmit } = getCompilerHooks(compiler);
 
-    afterEmit.tap('BatmanPlugin', (manifest) => {
-      return { ...manifest, name: 'hello' };
+    afterEmit.tap('ReplaceVendorPlugin', (manifest) => {
+      console.log(manifest)
     });
   }
 }
@@ -124,7 +124,7 @@ const config = [{
     colors: true
   },
   plugins: [
-    // new WebpackManifestPlugin({}),
+    new WebpackManifestPlugin({}),
     // new CleanWebpackPlugin(),
     // create blog,
     new MiniCssExtractPlugin({
@@ -145,6 +145,8 @@ const config = [{
 if (!production) {
   config[0].plugins.push(new webpack.HotModuleReplacementPlugin())
   config[0].plugins.push(new ReactRefreshWebpackPlugin())
+  // config[0].plugins.push(new ReplaceVendorPlugin())
 }
+
 
 module.exports = config

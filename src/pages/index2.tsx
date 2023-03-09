@@ -20,7 +20,7 @@ const NewComp2: React.FC<Message> = ({ message, name }) => {
   }
   return (
     <div>
-      <h1>Page 2 {message}, {name}! Counts: {count}</h1>
+      <h1>Page 2 {message}, {name}! Fuck you Counts: {count}</h1>
       <button onClick={incrementCount}>Press Me! 123</button>
       <button onClick={decrementCount}>Don&apos;t Press Me!</button>
       <br />
